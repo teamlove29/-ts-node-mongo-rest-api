@@ -1,6 +1,5 @@
 generator client {
   provider        = "prisma-client-js"
-
 }
 
 // NOTE: mongodb use `prisma db push` for update schema.
