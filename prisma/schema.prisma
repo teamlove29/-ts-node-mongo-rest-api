@@ -1,0 +1,33 @@
+generator client {
+  provider        = "prisma-client-js"
+
+}
+
+// NOTE: mongodb use `prisma db push` for update schema.
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String   @unique
+  username  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  authId         String? @unique @db.ObjectId
+  authentication Auth?   @relation(fields: [authId], references: [id])
+
+  @@map("users")
+}
+
+model Auth {
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  salt         String
+  password     String
+  sessionToken String?
+  user         User?
+
+  @@map("auths")
+}
